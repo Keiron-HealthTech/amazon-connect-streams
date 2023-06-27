@@ -64,7 +64,7 @@ declare namespace connect {
 
   /**
    * A callback with no arguments.
-   */ 
+   */
   type Callback = () => void;
 
   /**
@@ -81,7 +81,7 @@ declare namespace connect {
    * If the WebSocket has already failed at least once in initializing, the call is
    * synchronous and the callback is invoked immediately.  Otherwise, the callback is
    * invoked once the first attempt to initialize fails.
-   * 
+   *
    * @param callback A callback with no arguments
    */
   function onWebsocketInitFailure(callback: Callback): void;
@@ -111,7 +111,7 @@ declare namespace connect {
 
     /**
      * Subscribes a callback function to be called when the connect.EventType.IFRAME_RETRIES_EXHAUSTED event is triggered.
-     * 
+     *
      * @param f The callback function.
      */
     onIframeRetriesExhausted(f: Function): void;
@@ -119,18 +119,18 @@ declare namespace connect {
     /**
      * Subscribes a callback function to be called when multiple authorization-type CTI API failures have happened.
      * After this event occurs, streams will not try to re-authenticate the user when more CTI API authorization-type (401) failures happen.
-     * Note that CTI APIs are the agent, contact, and connection apis (specifically, those listed under the `connect.ClientMethods` enum). 
+     * Note that CTI APIs are the agent, contact, and connection apis (specifically, those listed under the `connect.ClientMethods` enum).
      * Therefore, it may be prudent to indicate to the agent that there is a problem related to authorization.
-     * 
+     *
      * @param f The callback function.
      */
     onCTIAuthorizeRetriesExhausted(f: Function): void;
 
     /**
      * Subscribes a callback function to be called when multiple agent authorization api failures have happened.
-     * After this event occurs, streams will not try to redirect the user to login when more agent authorization api failures happen. 
+     * After this event occurs, streams will not try to redirect the user to login when more agent authorization api failures happen.
      * Therefore, it may be prudent to indicate to the agent that there is a problem related to authorization.
-     * 
+     *
      * @param f The callback function.
      */
     onAuthorizeRetriesExhausted(f: Function): void;
@@ -185,56 +185,68 @@ declare namespace connect {
     onInitialized(callback: Function): void;
 
     /**
-    * Returns a promise that is resolved with the list of media devices from iframe.
-    *
-    * @param timeout A timeout for the request in milliseconds.
-    */
+     * Returns a promise that is resolved with the list of media devices from iframe.
+     *
+     * @param timeout A timeout for the request in milliseconds.
+     */
     getFrameMediaDevices(timeout: Number): Promise<any[]>;
 
     /**
+     * Gets the `EventBus` object.
+     * This method returns an `EventBus` for managing subscriptions with the high level subscription API.
+     */
+    getEventBus(): EventBus;
+
+    /**
      * Global upstream conduit for external use.
-     * 
+     *
      */
     upstream?: object | null;
+
+    /**
+     * Returns is initialized
+     *
+     */
+    initialized: boolean;
   }
 
   enum EventType {
-    ACKNOWLEDGE = 'acknowledge',
-    ACK_TIMEOUT = 'ack_timeout',
-    INIT = 'init',
-    API_REQUEST = 'api_request',
-    API_RESPONSE = 'api_response',
-    AUTH_FAIL = 'auth_fail',
-    ACCESS_DENIED = 'access_denied',
-    CLOSE = 'close',
-    CONFIGURE = 'configure',
-    LOG = 'log',
-    MASTER_REQUEST = 'master_request',
-    MASTER_RESPONSE = 'master_response',
-    SYNCHRONIZE = 'synchronize',
-    TERMINATE = 'terminate',
-    TERMINATED = 'terminated',
-    SEND_LOGS = 'send_logs',
-    RELOAD_AGENT_CONFIGURATION = 'reload_agent_configuration',
-    BROADCAST = 'broadcast',
-    API_METRIC = 'api_metric',
-    CLIENT_METRIC = 'client_metric',
-    SOFTPHONE_STATS = 'softphone_stats',
-    SOFTPHONE_REPORT = 'softphone_report',
-    CLIENT_SIDE_LOGS = 'client_side_logs',
-    SERVER_BOUND_INTERNAL_LOG = 'server_bound_internal_log',
-    MUTE = 'mute',
-    IFRAME_STYLE = 'iframe_style',
-    IFRAME_RETRIES_EXHAUSTED = 'iframe_retries_exhausted',
-    UPDATE_CONNECTED_CCPS = 'update_connected_ccps',
-    OUTER_CONTEXT_INFO = 'outer_context_info',
-    MEDIA_DEVICE_REQUEST = 'media_device_request',
-    MEDIA_DEVICE_RESPONSE = 'media_device_response',
-    TAB_ID = 'tab_id',
-    AUTHORIZE_SUCCESS = 'authorize_success',
-    AUTHORIZE_RETRIES_EXHAUSTED = 'authorize_retries_exhausted',
-    CTI_AUTHORIZE_RETRIES_EXHAUSTED = 'cti_authorize_retries_exhausted',
-    CLICK_STREAM_DATA = 'click_stream_data'
+    ACKNOWLEDGE = "acknowledge",
+    ACK_TIMEOUT = "ack_timeout",
+    INIT = "init",
+    API_REQUEST = "api_request",
+    API_RESPONSE = "api_response",
+    AUTH_FAIL = "auth_fail",
+    ACCESS_DENIED = "access_denied",
+    CLOSE = "close",
+    CONFIGURE = "configure",
+    LOG = "log",
+    MASTER_REQUEST = "master_request",
+    MASTER_RESPONSE = "master_response",
+    SYNCHRONIZE = "synchronize",
+    TERMINATE = "terminate",
+    TERMINATED = "terminated",
+    SEND_LOGS = "send_logs",
+    RELOAD_AGENT_CONFIGURATION = "reload_agent_configuration",
+    BROADCAST = "broadcast",
+    API_METRIC = "api_metric",
+    CLIENT_METRIC = "client_metric",
+    SOFTPHONE_STATS = "softphone_stats",
+    SOFTPHONE_REPORT = "softphone_report",
+    CLIENT_SIDE_LOGS = "client_side_logs",
+    SERVER_BOUND_INTERNAL_LOG = "server_bound_internal_log",
+    MUTE = "mute",
+    IFRAME_STYLE = "iframe_style",
+    IFRAME_RETRIES_EXHAUSTED = "iframe_retries_exhausted",
+    UPDATE_CONNECTED_CCPS = "update_connected_ccps",
+    OUTER_CONTEXT_INFO = "outer_context_info",
+    MEDIA_DEVICE_REQUEST = "media_device_request",
+    MEDIA_DEVICE_RESPONSE = "media_device_response",
+    TAB_ID = "tab_id",
+    AUTHORIZE_SUCCESS = "authorize_success",
+    AUTHORIZE_RETRIES_EXHAUSTED = "authorize_retries_exhausted",
+    CTI_AUTHORIZE_RETRIES_EXHAUSTED = "cti_authorize_retries_exhausted",
+    CLICK_STREAM_DATA = "click_stream_data",
   }
 
   const core: Core;
@@ -277,7 +289,7 @@ declare namespace connect {
     endpoint: string;
     style?: string;
     instance?: AppMethods;
-  }
+  };
 
   interface AppMethods {
     init(): void;
@@ -325,25 +337,25 @@ declare namespace connect {
 
   interface LoginOptions {
     /*
-    * Whether to auto close the login prompt.
-    */
-    autoClose?: boolean,
+     * Whether to auto close the login prompt.
+     */
+    autoClose?: boolean;
     /*
-    * The height of the login prompt window.
-    */
-    height?: number,
+     * The height of the login prompt window.
+     */
+    height?: number;
     /*
-    * The width of the login prompt window.
-    */
-    width?: number,
+     * The width of the login prompt window.
+     */
+    width?: number;
     /*
-    * The top of the login prompt window.
-    */
-    top?: number,
+     * The top of the login prompt window.
+     */
+    top?: number;
     /*
-    * The left of the login prompt window.
-    */
-    left?: number
+     * The left of the login prompt window.
+     */
+    left?: number;
   }
 
   interface PageOptions {
@@ -420,7 +432,6 @@ declare namespace connect {
     /** A timeout in ms that indicates how long streams will wait for the initial ACKNOWLEDGE event from the shared worker while the CCP is still standing itself up. */
     readonly ccpLoadTimeout?: number;
   }
-
 
   interface OptionalInitCCPOptions {
     /**
@@ -514,23 +525,23 @@ declare namespace connect {
   }
 
   enum AgentEvents {
-    INIT = 'init',
-    UPDATE = 'update',
-    REFRESH = 'refresh',
-    ROUTABLE = 'routable',
-    NOT_ROUTABLE = 'not_routable',
-    PENDING = 'pending',
-    CONTACT_PENDING = 'contact_pending',
-    OFFLINE = 'offline',
-    ERROR = 'error',
-    SOFTPHONE_ERROR = 'softphone_error',
-    WEBSOCKET_CONNECTION_LOST = 'websocket_connection_lost',
-    WEBSOCKET_CONNECTION_GAINED = 'websocket_connection_gained',
-    STATE_CHANGE = 'state_change',
-    ACW = 'acw',
-    MUTE_TOGGLE = 'mute_toggle',
-    LOCAL_MEDIA_STREAM_CREATED = 'local_media_stream_created',
-    ENQUEUED_NEXT_STATE = 'enqueued_next_state',
+    INIT = "init",
+    UPDATE = "update",
+    REFRESH = "refresh",
+    ROUTABLE = "routable",
+    NOT_ROUTABLE = "not_routable",
+    PENDING = "pending",
+    CONTACT_PENDING = "contact_pending",
+    OFFLINE = "offline",
+    ERROR = "error",
+    SOFTPHONE_ERROR = "softphone_error",
+    WEBSOCKET_CONNECTION_LOST = "websocket_connection_lost",
+    WEBSOCKET_CONNECTION_GAINED = "websocket_connection_gained",
+    STATE_CHANGE = "state_change",
+    ACW = "acw",
+    MUTE_TOGGLE = "mute_toggle",
+    LOCAL_MEDIA_STREAM_CREATED = "local_media_stream_created",
+    ENQUEUED_NEXT_STATE = "enqueued_next_state",
   }
 
   /** This enumeration lists the different types of endpoints. */
@@ -585,7 +596,7 @@ declare namespace connect {
     SILENT_MONITOR = "silent_monitor",
 
     /** The connection is in barge mode */
-    BARGE = "barge"
+    BARGE = "barge",
   }
 
   enum ContactEvents {
@@ -727,18 +738,18 @@ declare namespace connect {
     SEND_DATA_FAILED_EXCEPTION = "SendDataFailedException",
     UNAUTHORIZED_EXCEPTION = "UnauthorizedException",
   }
-  
+
   enum MonitoringMode {
-  	SLIENT_MONITOR = "SILENT_MONITOR",
-  	BARGE = "BARGE"
+    SLIENT_MONITOR = "SILENT_MONITOR",
+    BARGE = "BARGE",
   }
 
   enum MasterTopics {
-    LOGIN_POPUP = 'loginPopup',
-    SEND_LOGS = 'sendLogs',
-    SOFTPHONE = 'softphone',
-    RINGTONE = 'ringtone',
-    METRICS = 'metrics',
+    LOGIN_POPUP = "loginPopup",
+    SEND_LOGS = "sendLogs",
+    SOFTPHONE = "softphone",
+    RINGTONE = "ringtone",
+    METRICS = "metrics",
   }
 
   /*
@@ -769,7 +780,6 @@ declare namespace connect {
    * There is only ever one agent per Streams instantiation and all contacts and actions are assumed to be taken on behalf of this one agent.
    */
   class Agent {
-
     /**
      * Subscribe a method to be called whenever new agent data is available.
      *
@@ -843,9 +853,9 @@ declare namespace connect {
      */
     onAfterCallWork(callback: AgentCallback): void;
 
-    /** 
+    /**
      * Subscribe a method to be called when the agent is put into an error state specific to losing a WebSocket connection.
-     * 
+     *
      * @param callback A callback to receive the `Agent` API object instance.
      */
     onWebSocketConnectionLost(callback: AgentCallback): void;
@@ -859,12 +869,11 @@ declare namespace connect {
     /** Alias for `getState()`. */
     getStatus(): AgentState;
 
-    /** 
-     * Get the AgentState object of the agent's enqueued next status. 
+    /**
+     * Get the AgentState object of the agent's enqueued next status.
      * If the agent has not enqueued a next status, returns null.
      */
     getNextState(): AgentState;
-
 
     /**
      * Get the duration of the agent's state in milliseconds relative to local time.
@@ -934,10 +943,7 @@ declare namespace connect {
      * @param config The desired configuration.
      * @param callbacks Success and failure callbacks to determine whether the operation was successful.
      */
-    setConfiguration(
-      config: AgentConfiguration,
-      callbacks?: SuccessFailOptions
-    ): void;
+    setConfiguration(config: AgentConfiguration, callbacks?: SuccessFailOptions): void;
 
     /**
      * Set the agent's current availability state.
@@ -947,11 +953,7 @@ declare namespace connect {
      * @param callbacks Success and failure callbacks to determine whether the operation was successful.
      * @param options
      */
-    setState(
-      state: AgentStateDefinition,
-      callbacks?: SuccessFailOptions,
-      options?: AgentSetStateOptions
-    ): void;
+    setState(state: AgentStateDefinition, callbacks?: SuccessFailOptions, options?: AgentSetStateOptions): void;
 
     /**
      * Create task contact.
@@ -963,10 +965,7 @@ declare namespace connect {
     createTask(taskContact: TaskContactDefinition, callbacks?: SuccessFailOptions): void;
 
     /** Alias for `setState()`. */
-    setStatus(
-      state: AgentStateDefinition,
-      callbacks?: SuccessFailOptions
-    ): void;
+    setStatus(state: AgentStateDefinition, callbacks?: SuccessFailOptions): void;
 
     /**
      * Creates an outbound contact to the given endpoint.
@@ -985,10 +984,7 @@ declare namespace connect {
      * @param queueARNs A single Queue ARN or a list of Queue ARNs associated with the desired queues.
      * @param callbacks Success and failure callbacks to determine whether the operation was successful.
      */
-    getEndpoints(
-      queueARNs: string | string[],
-      callbacks: GetEndpointsCallbacks
-    ): void;
+    getEndpoints(queueARNs: string | string[], callbacks: GetEndpointsCallbacks): void;
 
     /**
      * The data behind the `Agent` API object is ephemeral and changes whenever new data is provided.
@@ -1124,7 +1120,6 @@ declare namespace connect {
 
     /** A random value */
     readonly idempotencyToken: string;
-
   }
 
   /**
@@ -1321,9 +1316,9 @@ declare namespace connect {
     onConnected(callback: ContactCallback): void;
 
     /**
-     * Subscribe a method to be invoked when the contact error event is triggered. 
+     * Subscribe a method to be invoked when the contact error event is triggered.
      * This event is only triggered when a contact state of type error appears in the snapshot.
-     * 
+     *
      * @param callback A callback to receive the `Contact` API object instance.
      */
     onError(callback: ContactCallback): void;
@@ -1471,11 +1466,7 @@ declare namespace connect {
      * @param description A description to associate with the diagnostic report.
      * @param callbacks Success and failure callbacks to determine whether the operation was successful.
      */
-    notifyIssue(
-      issueCode: string,
-      description: string,
-      callbacks?: SuccessFailOptions
-    ): void;
+    notifyIssue(issueCode: string, description: string, callbacks?: SuccessFailOptions): void;
 
     /**
      * Add a new outbound third-party connection to this contact and connect it to the specified endpoint.
@@ -1509,16 +1500,16 @@ declare namespace connect {
 
     /** Determine whether this contact is a softphone call and multiparty conference feature is turned on.  */
     isMultiPartyConferenceEnabled(): boolean;
-    
+
     /** Determines if the contact is under manager's supervision */
     isUnderSupervision(): boolean;
-    
+
     /**
-    * Updates the monitor participant state to switch between different monitoring modes.
-    * 
-    * @param targetState A MonitoringMode enum member
-    * @param callbacks Success and failure callbacks to determine whether the operation was successful
-    */
+     * Updates the monitor participant state to switch between different monitoring modes.
+     *
+     * @param targetState A MonitoringMode enum member
+     * @param callbacks Success and failure callbacks to determine whether the operation was successful
+     */
     updateMonitorParticipantState(targetState: MonitoringMode, callbacks?: SuccessFailOptions): void;
   }
 
@@ -1723,34 +1714,34 @@ declare namespace connect {
      * @param callbacks Success and failure callbacks to determine whether the operation was successful.
      */
     unmuteParticipant(callbacks?: SuccessFailOptions): void;
-    
+
     /**
-    * Returns true if monitorStatus is MonitoringMode.SILENT_MONITOR. This means the supervisor connection is in silent monitoring state. 
-    * Regular agent will not see supervisor's connection in the snapshot while it is in silent monitor state.
-    */
+     * Returns true if monitorStatus is MonitoringMode.SILENT_MONITOR. This means the supervisor connection is in silent monitoring state.
+     * Regular agent will not see supervisor's connection in the snapshot while it is in silent monitor state.
+     */
     isSilentMonitor(): boolean;
-    
+
     /**
-    * Returns true if monitorStatus is MonitoringMode.BARGE. 
-    * This means the connection is in barge-in state. Regular agent will see the supervisor's connection in the list of connections in the snapshot.
-    */
+     * Returns true if monitorStatus is MonitoringMode.BARGE.
+     * This means the connection is in barge-in state. Regular agent will see the supervisor's connection in the list of connections in the snapshot.
+     */
     isBarge(): boolean;
-    
+
     /** Returns true if agent's monitoringCapabilities contain MonitoringMode.SILENT_MONITOR type. */
     isSilentMonitorEnabled(): boolean;
-    
+
     /** Returns true if agent's monitoringCapabilities contain MonitoringMode.BARGE state type. */
     isBargeEnabled(): boolean;
-    
+
     /** Returns the array of enabled monitor states of this connection. The array will consist of MonitoringMode enum values. */
     getMonitorCapabilities(): MonitoringMode[];
-    
+
     /**
-    * Returns the current monitoring state of this connection.
-    * This value can be one of MonitoringMode enum values if the agent is supervisor, otherwise the monitorStatus will be undefined for the agent.
-    */
+     * Returns the current monitoring state of this connection.
+     * This value can be one of MonitoringMode enum values if the agent is supervisor, otherwise the monitorStatus will be undefined for the agent.
+     */
     getMonitorStatus(): MonitoringMode;
-    
+
     /** Returns true if the connection was forced muted by the manager. */
     isForcedMute(): boolean;
   }
@@ -1927,4 +1918,64 @@ declare namespace connect {
 
   /** Gets the global logger instance. */
   function getLog(): Logger;
+
+  /**
+   * An object representing an event subscription in an EventBus.
+   */
+  interface Subscription {
+    /**
+     * Unsubscribe the handler of this subscription from the EventBus
+     * from which it was created.
+     */
+    unsubscribe(): void;
+  }
+
+  /**
+   * An object which maintains a map of subscriptions and serves as the
+   * mechanism for triggering events to be handled by subscribers.
+   */
+  interface EventBus {
+    /**
+     * Subscribe to the named event.  Returns a new Subscription object
+     * which can be used to unsubscribe.
+     * @param eventName The subscription event name.
+     * @param f The callback function.
+     */
+    subscribe(eventName: EventType, f: Function): Subscription;
+
+    /**
+     * Subscribe a function to be called on all events.
+     * @param f The callback function.
+     */
+    subscribeAll(f: Function): Subscription;
+
+    /**
+     * Get a list of subscriptions for the given event name, or an empty
+     * list if there are no subscriptions.
+     * @param eventName The subscription event name.
+     */
+    getSubscriptions(eventName: EventType): Subscription[];
+
+    /**
+     * Trigger the given event with the given data.  All methods subscribed
+     * to this event will be called and are provided with the given arbitrary
+     * data object and the name of the event, in that order.
+     * @param eventName The event name.
+     * @param data The event data.
+     */
+    trigger(eventName: EventType, data: any): void;
+
+    /**
+     * Returns a closure which bridges an event from another EventBus to this bus.
+     *
+     * Usage:
+     * conduit.onUpstream("MyEvent", bus.bridge());
+     */
+    bridge(): (data: any, event: string) => void;
+
+    /**
+     * Unsubscribe all events in the event bus.
+     */
+    unsubscribeAll(): void;
+  }
 }
